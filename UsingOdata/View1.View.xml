@@ -17,15 +17,16 @@
 						<items>
 							<ColumnListItem>
 								<cells>
-									<Text text="1000000"/>
-									<Text text="0010"/>
-									<Text text="mat1"/>
-									<Text text="898.89"/>
-									<Text text="45204104"/>
+									<Text text="{Salesno}"/>
+									<Text text="{SalesItem}"/>
+									<Text text="{Material}"/>
+									<Text text="{SalesValue}"/>
+									<Text text="{Delivery}"/>
 								</cells>
 							</ColumnListItem>
 						</items>
 					</Table>
+
 				</content>
 			</Page>
 		</pages>
