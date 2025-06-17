@@ -1,0 +1,33 @@
+<mvc:View controllerName="ZFIRST_APP.controller.View1" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<Table items="{/SalesDetailsSet}">
+						<columns>
+							<Column><Label text="Salesno" /></Column>
+							<Column><Label text="Sales Item" /></Column>
+							<Column><Label text="Material" /></Column>
+							<Column><Label text="Value" /></Column>
+							<Column><Label text="Delivery" /></Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="1000000"/>
+									<Text text="0010"/>
+									<Text text="mat1"/>
+									<Text text="898.89"/>
+									<Text text="45204104"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
