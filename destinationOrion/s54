@@ -1,0 +1,12 @@
+# Service Destination
+Description=DEVONEE
+Type=HTTPS
+TrustAll=true
+Authentication=NoAuthentication
+WebIDEUsage=odata_abap,odata_gen,ui5_execute_abap,dev_abap,bsp_execute_abap
+Name=DEVONEE
+ProxyType=OnPremise
+URL=https://devehsapp01.sysinf.one.intra:44301/
+WebIDESystem=E04
+WebIDEEnabled=true
+sap-client=100
