@@ -1,0 +1,29 @@
+<mvc:View controllerName="ZFIRST_APP.controller.View1" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<List
+					      headerText="{i18n>invoiceListTitle}"
+					      class="sapUiResponsiveMargin"
+					      width="auto"
+					      items="{invoiceItems>/Invoices}" >
+					      <items>
+					         <ObjectListItem
+					            title="{invoiceItems>Quantity} x {invoiceItems>ProductName}"
+					            />
+					      </items>
+					 </List>
+					 <Button 
+			            id="totalBtn"
+			            text="{i18n>showToastBtnText}"
+			            press=".onPressDisplayTotal"
+			            class="sapUiSmallMarginBeginEnd"/>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
