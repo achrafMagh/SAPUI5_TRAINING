@@ -1,0 +1,8 @@
+SELECT vbap~vbeln, vbap~posnr, vbap~matnr, vbap~ntgew, lips~vbeln as delivery
+    FROM vbap
+    INNER JOIN lips
+    ON vbap~VBELN = lips~vgbel and vbap~posnr = lips~vgpos
+    INTO TABLE @GT_TABLE up TO 100 ROWS.
+
+
+GV_DATE = sy-datum.
