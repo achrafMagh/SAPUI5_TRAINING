@@ -21,7 +21,7 @@ METHOD kpiset_get_entityset.
 **  CATCH /iwbep/cx_mgw_tech_exception.
 **ENDTRY.
 
-  TYPES: BEGIN OF ty_site_lvl, "Structure of all levels (hierarchy)
+  TYPES: BEGIN OF ty_site_lvl, 
            Level_1  TYPE ehfnd_location_uuid_ref,
            Level_2  TYPE ehfnd_location_uuid_ref,
            Level_3  TYPE ehfnd_location_uuid_ref,
@@ -34,31 +34,30 @@ METHOD kpiset_get_entityset.
            Level_10 TYPE ehfnd_location_uuid_ref,
          END OF ty_site_lvl.
 
-  DATA: lt_all_sites TYPE TABLE OF ty_site_lvl. "Table that contains all sites 
+  DATA: lt_all_sites TYPE TABLE OF ty_site_lvl. 
 
-  DATA: lv_kpi_f      TYPE f,  "need this to calculate kpis that has div operations
-        lv_kpi_single TYPE int8, "same type declared inside odata service
+  DATA: lv_kpi_f      TYPE f,  
+        lv_kpi_single TYPE int8, 
         lv_total_sini TYPE int8,
         lv_total_f    TYPE p DECIMALS 2,
         lv_kpi_f_y    TYPE p DECIMALS 2,
-        lv_sinis_clot TYPE int8. "Used for the first select in A / B kpis
-  DATA:     " Original table with hierarchy
-lt_distinct TYPE TABLE OF ehfnd_location_uu id_ref.
+        lv_sinis_clot TYPE int8. 
+ 
+
   TYPES: BEGIN OF ty_site,
            id   TYPE ehfnd_location_uuid_ref,
            name TYPE string,
            kpi  TYPE i,
          END OF ty_site,
-         tty_sites TYPE RANGE OF ehfnd_location_uuid_ref. "because we used in sql IN (The IN operator in ABAP expects a range table, with structures)
-
-*            tty_sites TYPE TABLE OF ehfnd_location_uuid_ref.
+         tty_sites TYPE RANGE OF ehfnd_location_uuid_ref. 
   TYPES: BEGIN OF ty_parent,
            parent   TYPE ehfnd_location_uuid_ref,
            name     TYPE string,
            kpi      TYPE i,
            children TYPE tty_sites,
          END OF ty_parent,
-         tty_parent TYPE TABLE OF ty_parent. "to get all children with their parents
+         tty_parent TYPE TABLE OF ty_parent. 
+
   "Filtres
   DATA: lt_sites      TYPE RANGE OF ernam, "RANGE Has 4 fields: SIGN, OPTION, LOW, HIGH (same structure in oData api when using filter)
         lt_from_date  TYPE RANGE OF ernam, "ernam data element type string
@@ -145,10 +144,9 @@ lt_distinct TYPE TABLE OF ehfnd_location_uu id_ref.
 
 
 
-  //Prepare number of years and months
-  lv_years_diff = ( lv_to_date(4) - lv_from_date(4) ) * 12. //number of years in months
-  lv_remaining_months = ( lv_to_date+4(2) - lv_from_date+4(2) ).  //number of months in the same year
-  lv_months_diff = lv_years_diff + lv_remaining_months. //total number of months
+  lv_years_diff = ( lv_to_date(4) - lv_from_date(4) ) * 12. 
+  lv_remaining_months = ( lv_to_date+4(2) - lv_from_date+4(2) ).  
+  lv_months_diff = lv_years_diff + lv_remaining_months. 
   lv_currM = lv_from_date+4(2).
   lv_currY = lv_from_date(4).
   DATA(lv_years_number) = ( lv_to_date(4) - lv_from_date(4) ).
@@ -159,12 +157,8 @@ lt_distinct TYPE TABLE OF ehfnd_location_uu id_ref.
   DATA: id        TYPE string,
         lv_parent TYPE ehfnd_location_uuid_ref.
   id = lv_id.
-*    id =  |{ id ALPHA = IN }|.
 
-  id = |{ lv_id WIDTH = 20 ALIGN = RIGHT PAD = '0' }|. //string template, add 0 to the left to fit exactly 20 chars
-
-  " Fetch all direct children of the parent (get all children in the first lvl)
-  "id here is for the top parent "onee-be"
+  id = |{ lv_id WIDTH = 20 ALIGN = RIGHT PAD = '0' }|. 
   SELECT SINGLE ehslocationuuid
     FROM c_curehslocationinclroothier
     WHERE ehslocationid = @id
@@ -246,9 +240,8 @@ lt_distinct TYPE TABLE OF ehfnd_location_uu id_ref.
 
   ENDLOOP.
 
-  "Delete duplicated children
+ 
   LOOP AT lt_temp ASSIGNING FIELD-SYMBOL(<fs>).
-    " Sort by the 'low' value, which is the UUID in the range table
     SORT <fs>-children BY low.
     DELETE ADJACENT DUPLICATES FROM <fs>-children COMPARING low.
   ENDLOOP.
