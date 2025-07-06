@@ -1,0 +1,76 @@
+<mvc:View controllerName="ZKPI_NSZKPI_CHARTS.controller.View1" xmlns:mvc="sap.ui.core.mvc" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:layout="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns="sap.m"
+	xmlns:core="sap.ui.core" height="100%" displayBlock="true">
+	<Page title="Indicateurs clés de performance">
+		<content>
+			<VBox id="filterSection" class="sapUiSmallMargin" width="90%">
+				<HBox class="sapUiSmallMarginBottom" alignItems="Center" justifyContent="SpaceBetween">
+					<HBox alignItems="Center">
+						<DatePicker id="dateBegin"  placeholder="Date début" />
+				
+					</HBox>
+					<HBox alignItems="Center">
+						<DatePicker id="dateEnd" placeholder="Date fin"/>
+					</HBox>
+					<HBox alignItems="Center">
+						<ComboBox id="kpiComboBox" placeholder="KPI" items="{kpiModel>/kpis}">
+							<core:Item key="{kpiModel>key}" text="{kpiModel>text}"/>
+						</ComboBox>
+					</HBox>
+				
+				<!-- Chart Type Selection -->
+				<HBox alignItems="Center" >
+					<!--<Label text="Chart Type" labelFor="chartTypeComboBox" width="120px"/>-->
+					<ComboBox id="chartTypeComboBox" placeholder="Select type" selectedKey="{chartTypeModel>/selectedChartType}" change="onChartTypeChange">
+						<core:Item key="stacked_column" text="Stacked Column"/>
+						<core:Item key="stacked_bar" text="Stacked bar"/>
+						<core:Item key="line" text="Line Chart"/>
+						<core:Item key="column" text="column"/>
+						<core:Item key="bar" text="Bar Chart"/>
+						<core:Item key="pie" text="Pie Chart"/>
+					</ComboBox>
+				</HBox>
+				</HBox>
+				<!-- Apply Filters Button -->
+				<HBox justifyContent="Center"  >
+					<Button text="Valider" press=".onApplyFilters" type="Emphasized" />
+					<Button text="Retour" press=".onBack" type="Emphasized" class="sapUiSmallMarginBegin"/>
+				</HBox>
+				
+				
+				
+				<!-- Busy Indicator -->
+				<HBox justifyContent="Center" alignItems="Center" class="sapUiMediumMarginTop">
+					<BusyIndicator id="busyIndicator" text="Chargement en cours" visible="false"/>
+				</HBox>
+			</VBox>
+			<!-- Chart Section -->
+			<VBox class="sapUiMediumMarginTop">
+				<viz:VizFrame id="idVizFrame" selectData="myOnClickHandler"
+					vizProperties="{ plotArea: { drawingEffect: 'glossy'}, title:{ text:'Data analysis through Reports'}, dataLabel:{visible:true, showTotal:true} }"
+					uiConfig="{applicationSet:'fiori'}" height="340px" width="100%" vizType="{chartTypeModel>/selectedChartType}">
+					<viz:dataset>
+						<viz.data:FlattenedDataset data="{chartModel>/}">
+							<viz.data:dimensions>
+								<viz.data:DimensionDefinition name="month" value="{chartModel>period}"/>
+								<viz.data:DimensionDefinition name="year" value="{chartModel>year}"/>
+								<viz.data:DimensionDefinition name="site" value="{path: 'site', formatter: '.formatSiteValue'}"/>
+							</viz.data:dimensions>
+							<viz.data:measures>
+								<viz.data:MeasureDefinition name="kpiValue" value="{chartModel>kpiValue}"/>
+							</viz.data:measures>
+						</viz.data:FlattenedDataset>
+					</viz:dataset>
+					<viz:feeds>
+						<viz.feeds:FeedItem id="valueAxisFeed" uid="valueAxis" type="Measure" values="kpiValue"/>
+						<viz.feeds:FeedItem id="categoryAxisFeed" uid="categoryAxis" type="Dimension" values="year,month"/>
+						<viz.feeds:FeedItem id="colorFeed" uid="color" type="Dimension" values="site"/>
+					</viz:feeds>
+					<viz:dependents>
+						<viz:Popover id="idPopOver"/>
+					</viz:dependents>
+				</viz:VizFrame>
+			</VBox>
+		</content>
+	</Page>
+</mvc:View>

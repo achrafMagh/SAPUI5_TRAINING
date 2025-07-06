@@ -1,0 +1,12 @@
+sap.ui.define([], function () {
+    "use strict";
+    return {
+        formatDecimal: function (value) {
+            if (value !== null && value !== undefined) {
+                return parseFloat(value).toFixed(5); // 5 decimal places
+            }
+            return "0.00000";
+        }
+    
+    };
+});
